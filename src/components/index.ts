@@ -1,1 +1,2 @@
-require('./hello');
+import './hello';
+import './websocket';

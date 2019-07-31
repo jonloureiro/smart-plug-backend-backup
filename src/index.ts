@@ -2,6 +2,6 @@ import server from './server';
 
 import { port } from './config';
 
-require('./components');
+import './components';
 
 server.listen(port);

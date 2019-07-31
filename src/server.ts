@@ -1,7 +1,7 @@
-import { createServer, Server } from 'restify';
+import { createServer } from 'restify';
 
 
-const server: Server = createServer();
+const server = createServer();
 
 
 export default server;
