@@ -1,14 +1,15 @@
 /* eslint-disable no-param-reassign */
-import WebSocket, { Server, VerifyClientCallbackSync } from 'ws';
 
-import './isAlive';
+import { Server, VerifyClientCallbackSync } from 'ws';
+
+import Socket from './socket';
 
 import server from '../../server';
 
 
 const verifyClient: VerifyClientCallbackSync = ({ req: { headers } }): boolean => {
   if (headers['sec-websocket-protocol'] !== 'jonloureiro.dev') return false;
-  // console.log(headers);
+  console.log(headers);
   return true;
 };
 
@@ -20,7 +21,7 @@ const ws: Server = new Server({
   maxPayload: 16,
 });
 
-ws.on('connection', (socket: WebSocket): void => {
+ws.on('connection', (socket: Socket): void => {
   socket.isAlive = true;
 
   socket.on('message', (message): void => {
@@ -41,7 +42,7 @@ ws.on('connection', (socket: WebSocket): void => {
   });
 
   setInterval((): void => {
-    if (socket.isAlive === false) return socket.terminate();
+    if (!socket.isAlive) return socket.terminate();
     socket.isAlive = false;
     return socket.ping();
   }, 5000);
