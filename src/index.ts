@@ -1,3 +1,7 @@
-const a = 8;
+import server from './server';
 
-console.log(a);
+import { port } from './config';
+
+require('./components');
+
+server.listen(port);
