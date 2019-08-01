@@ -4,7 +4,7 @@
 import { Server } from 'restify';
 import WebSocker, { VerifyClientCallbackSync } from 'ws';
 
-import Socket from './socket';
+import { Socket } from './websocket.utils';
 
 
 const verifyClient: VerifyClientCallbackSync = ({ req: { headers } }): boolean => {
