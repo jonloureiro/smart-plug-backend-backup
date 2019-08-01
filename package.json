@@ -5,10 +5,11 @@
   "license": "GPL-2.0",
   "main": "src/index.ts",
   "scripts": {
-    "dev": "nodemon -e ts --exec 'tsc --incremental; yarn start'",
+    "dev": "nodemon -e ts --exec 'tsc && yarn start'",
     "build": "tsc",
     "start": "node dist/index.js",
-    "lint": "eslint --ext .ts src/"
+    "lint": "eslint --ext .ts src/",
+    "clean": "rm dist -Rf"
   },
   "dependencies": {
     "restify": "^8.3.3",
