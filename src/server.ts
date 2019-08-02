@@ -2,8 +2,10 @@ import { createServer } from 'restify';
 
 import services from './services';
 
+import 'reflect-metadata';
 
-const server = createServer();
+
+const server = createServer({ name: 'SmartPlug' });
 services(server);
 
 
