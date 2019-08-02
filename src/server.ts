@@ -1,12 +1,14 @@
 import { createServer } from 'restify';
 
-import services from './services';
+import services, { entitys } from './services';
+import database from './database';
 
 import 'reflect-metadata';
 
 
 const server = createServer({ name: 'SmartPlug' });
 services(server);
+database(entitys);
 
 
 export default server;
