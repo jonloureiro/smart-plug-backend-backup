@@ -1,6 +1,7 @@
 import { ConnectionOptions } from 'typeorm';
 import { databaseUrl as url, nodeEnv } from '../config';
 
+
 const config: ConnectionOptions = {
   type: 'postgres',
   url,
@@ -12,5 +13,6 @@ const config: ConnectionOptions = {
     migrationsDir: 'src/database/migrations',
   },
 };
+
 
 export = config;

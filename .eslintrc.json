@@ -20,6 +20,7 @@
         "sourceType": "module"
     },
     "rules": {
+        "import/prefer-default-export": 0,
         "@typescript-eslint/indent": 0,
         "@typescript-eslint/no-inferrable-types": 0
     },
