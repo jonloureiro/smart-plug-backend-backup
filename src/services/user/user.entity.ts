@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import {
   Entity, Unique, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn, UpdateDateColumn,
 } from 'typeorm';
+
 
 @Entity()
 @Unique(['email'])
@@ -24,5 +24,6 @@ class User extends BaseEntity {
   @UpdateDateColumn()
   updatedAt!: Date;
 }
+
 
 export = User;

@@ -22,7 +22,8 @@
     "rules": {
         "import/prefer-default-export": 0,
         "@typescript-eslint/indent": 0,
-        "@typescript-eslint/no-inferrable-types": 0
+        "@typescript-eslint/no-inferrable-types": 0,
+        "@typescript-eslint/explicit-member-accessibility": 0
     },
     "settings": {
         "import/resolver": {
