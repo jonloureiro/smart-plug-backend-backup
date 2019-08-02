@@ -8,12 +8,12 @@
     "postinstall": "yarn build",
     "start": "node dist/index.js",
     "build": "tsc",
-    "dev": "nodemon -e ts --exec 'yarn build && node dist/index.js'",
+    "dev": "nodemon -e ts --exec 'yarn build -i&& node dist/index.js'",
     "lint": "eslint --ext .ts src/",
     "clean": "rm dist -Rf",
     "test": "jest",
-    "tdd": "yarn test -- --watch",
-    "cover": "yarn test -- --coverage"
+    "tdd": "yarn test --watch",
+    "cover": "yarn test --coverage"
   },
   "dependencies": {
     "pg": "^7.12.0",
