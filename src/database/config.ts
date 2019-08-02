@@ -1,5 +1,5 @@
 import { ConnectionOptions } from 'typeorm';
-import { databaseUrl as url } from '../config';
+import { databaseUrl as url, nodeEnv } from '../config';
 
 const config: ConnectionOptions = {
   type: 'postgres',
@@ -7,6 +7,7 @@ const config: ConnectionOptions = {
   entities: ['dist/**/*.entity.js'],
   synchronize: true,
   logging: false,
+  dropSchema: nodeEnv === 'test',
   cli: {
     migrationsDir: 'src/database/migrations',
   },

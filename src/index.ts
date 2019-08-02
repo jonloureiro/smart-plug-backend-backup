@@ -1,11 +1,12 @@
 /* eslint-disable no-console */
 
-import database from './database';
+import { createConnection } from 'typeorm';
+import { config } from './database';
 import server from './server';
 import { port } from './config';
 
 
-database()
+createConnection(config)
   .then((): void => {
     server.listen(port, (): void => console.log(`${server.name} on ${server.url}`));
   })

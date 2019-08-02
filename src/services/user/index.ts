@@ -1,9 +1,7 @@
 import { Server } from 'restify';
-import User from './user.entity';
+import routes from './user.routes';
 
-
-export { User };
 
 export default (server: Server): void => {
-  console.log(server.name);
+  routes(server);
 };
