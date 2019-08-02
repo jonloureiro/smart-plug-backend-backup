@@ -9,4 +9,4 @@ database()
   .then((): void => {
     server.listen(port, (): void => console.log(`${server.name} on ${server.url}`));
   })
-  .catch((error): void => console.log(`Erro no database\n${error.error}`));
+  .catch((error): void => console.log(`Erro no database\n${error}`));
