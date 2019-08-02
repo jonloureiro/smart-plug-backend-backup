@@ -1,11 +1,14 @@
 import { ConnectionOptions } from 'typeorm';
 import { databaseUrl as url, nodeEnv } from '../config';
 
+const entities = (nodeEnv === 'test')
+  ? ['**/*.entity.ts']
+  : ['**/*.entity.js'];
 
 const config: ConnectionOptions = {
   type: 'postgres',
   url,
-  entities: ['dist/**/*.entity.js'],
+  entities,
   synchronize: true,
   logging: false,
   dropSchema: nodeEnv === 'test',
