@@ -1,7 +1,5 @@
 import { Server } from 'restify';
-
 import entitys from './entitys';
-
 import hello from './hello';
 import user from './user';
 import websocket from './websocket';
