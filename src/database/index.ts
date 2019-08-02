@@ -1,13 +1,5 @@
-import { createConnection } from 'typeorm';
-import { databaseUrl as url } from '../config';
+import { createConnection, Connection } from 'typeorm';
+import config from './config';
 
 
-export = async (): Promise<void> => {
-  await createConnection({
-    type: 'postgres',
-    url,
-    entities: ['dist/**/*.entity.js'],
-    synchronize: true,
-    logging: false,
-  });
-}
+export = async (): Promise<Connection> => createConnection(config);
