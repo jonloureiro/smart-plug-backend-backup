@@ -9,20 +9,18 @@ class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column()
+  @Column('varchar', { length: 255 })
   email!: string;
 
-  @Column()
+  @Column('varchar', { length: 255 })
   name!: string;
 
-  @Column()
+  @Column('text')
   password!: string;
 
-  @Column()
   @CreateDateColumn()
   createdAt!: Date;
 
-  @Column()
   @UpdateDateColumn()
   updatedAt!: Date;
 }
