@@ -2,11 +2,10 @@
 
 import database from './database';
 import server from './server';
-import { entitys } from './services';
 import { port } from './config';
 
 
-database(entitys)
+database()
   .then((): void => {
     server.listen(port, (): void => console.log(`${server.name} on ${server.url}`));
   })

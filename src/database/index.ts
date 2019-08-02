@@ -1,12 +1,12 @@
-import { createConnection, EntitySchema } from 'typeorm';
+import { createConnection } from 'typeorm';
 import { databaseUrl as url } from '../config';
 
 
-export = async (entities: EntitySchema[]): Promise<void> => {
+export = async (): Promise<void> => {
   await createConnection({
     type: 'postgres',
     url,
-    entities,
+    entities: ['dist/**/*.entity.js'],
     synchronize: true,
     logging: false,
   });
