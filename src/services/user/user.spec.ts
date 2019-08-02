@@ -1,7 +1,9 @@
 import { createConnection, getConnection } from 'typeorm';
 import request from 'supertest';
+import { compare } from 'bcrypt';
 import server from '../../server';
 import { config } from '../../database';
+import User from './user.entity';
 
 beforeAll(async (): Promise<void> => {
   await createConnection(config);
@@ -17,7 +19,7 @@ describe('Integration', (): void => {
       const user = {
         name: 'Jonathan',
         email: 'me@jonloureiro.dev',
-        pass: '123456',
+        password: '123456',
       };
 
       const response = await request(server).post('/auth/register').send(user);
@@ -31,5 +33,17 @@ describe('Integration', (): void => {
 
 
 describe('Units', (): void => {
+  it('should encrypt user password', async (): Promise<void> => {
+    const user = await User.create({
+      name: 'Jonathan',
+      email: 'me@jonloureiro.dev',
+      password: '123456',
+    }).save();
 
+    expect(user.password).not.toBe('123456');
+
+    const decrypted = await compare('123456', user.password);
+
+    expect(decrypted).toEqual(true);
+  });
 });

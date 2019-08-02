@@ -1,6 +1,9 @@
 import {
-  Entity, Unique, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn, UpdateDateColumn,
+  Entity, Unique, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn,
+  UpdateDateColumn, BeforeInsert,
 } from 'typeorm';
+
+import { hash } from 'bcrypt';
 
 
 @Entity()
@@ -23,6 +26,12 @@ class User extends BaseEntity {
 
   @UpdateDateColumn()
   updatedAt!: Date;
+
+  @BeforeInsert()
+  private async encryptPassword(): Promise<void> {
+    console.log(this.password);
+    this.password = await hash(this.password, 10);
+  }
 }
 
 
