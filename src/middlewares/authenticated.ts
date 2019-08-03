@@ -12,6 +12,6 @@ export = (req: Request, res: Response, next: Next): void => {
     verify(token, secret);
     next();
   } catch (error) {
-    next(new UnauthorizedError('Token inválida'));
+    next(new UnauthorizedError('Acesso negado'));
   }
 };

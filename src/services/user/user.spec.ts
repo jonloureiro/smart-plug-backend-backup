@@ -132,8 +132,15 @@ describe('Integration', (): void => {
     });
 
     it('should not to access private route when not authenticated', async (): Promise<void> => {
-      const { status } = await request(server).get('/auth/private');
+      const { status, body } = await request(server).get('/auth/private');
       expect(status).toBe(401);
+      expect(body.message).toBe('Acesso negado');
+    });
+
+    it('should not to access private route when token invalid', async (): Promise<void> => {
+      const { status, body } = await request(server).get('/auth/private').set('Cookie', ['token=mytoken']);
+      expect(status).toBe(401);
+      expect(body.message).toBe('Acesso negado');
     });
   });
 });
