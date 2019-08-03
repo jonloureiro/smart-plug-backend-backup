@@ -39,7 +39,33 @@ describe('Integration', (): void => {
   });
 
   describe('Login', (): void => {
+    it('should login when credentials valid', async (): Promise<void> => {
+      const user = {
+        name: name.findName(),
+        email: internet.email(),
+        password: internet.password(),
+      };
 
+      await User.create(user).save();
+
+      const { status } = await request(server).post('/auth/login').send(user);
+      expect(status).toBe(200);
+    });
+
+    it('should not login when credentials invalid', async (): Promise<void> => {
+      const user = {
+        name: name.findName(),
+        email: internet.email(),
+        password: internet.password(),
+      };
+
+      await User.create(user).save();
+
+      user.password = '123456';
+
+      const { status } = await request(server).post('/auth/login').send(user);
+      expect(status).toBe(400);
+    });
   });
 });
 
