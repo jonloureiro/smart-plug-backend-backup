@@ -8,9 +8,9 @@
     "postinstall": "yarn build",
     "start": "node dist/index.js",
     "build": "tsc",
-    "dev": "nodemon -e ts --exec 'yarn build&& node dist/index.js'",
+    "dev": "nodemon -e ts --exec 'yarn build&& node dist/main.js'",
     "lint": "eslint --ext .ts src/",
-    "clean": "rm dist -Rf",
+    "clean": "rm dist coverage yarn-Rf",
     "test": "jest",
     "tdd": "yarn test --watch",
     "cover": "yarn test --coverage",
@@ -54,7 +54,7 @@
   },
   "jest": {
     "bail": true,
-    "verbose": true,
+    "collectCoverageFrom": ["src/**"],
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     }
