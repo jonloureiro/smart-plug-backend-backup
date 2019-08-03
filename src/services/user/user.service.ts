@@ -20,7 +20,7 @@ const login = async (email: string, password: string): Promise<{ token: string }
     return new BadRequestError('E-mail não cadastrado');
   }
 
-  if (!user.checkPassword(password)) {
+  if (!await user.checkPassword(password)) {
     return new BadRequestError('E-mail e/ou senha estão errados');
   }
 
