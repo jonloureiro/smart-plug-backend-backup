@@ -6,6 +6,8 @@ import {
   IsEmail, IsString, MinLength, MaxLength,
 } from 'class-validator';
 import { compare, hash } from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import { secret, expiresIn } from '../../config';
 
 
 @Entity()
@@ -44,6 +46,18 @@ class User extends BaseEntity {
   async checkPassword(password: string): Promise<boolean> {
     const checkPassword = await compare(password, this.password);
     return checkPassword;
+  }
+
+  generateToken(): string {
+    return jwt.sign({ id: this.id }, secret, { expiresIn });
+  }
+
+  checkToken(token: string): string | object {
+    try {
+      return jwt.verify(token, secret);
+    } catch (error) {
+      return `${error.message}`;
+    }
   }
 }
 

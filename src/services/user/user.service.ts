@@ -5,7 +5,7 @@ import User from './user.entity';
 
 const validator = new Validator();
 
-const login = async (email: string, password: string): Promise<{ token: string } | HttpError> => {
+const login = async (email: string, password: string): Promise<string | HttpError> => {
   if (!validator.isEmail(email)) {
     return new BadRequestError('E-mail inválida');
   }
@@ -24,7 +24,7 @@ const login = async (email: string, password: string): Promise<{ token: string }
     return new BadRequestError('E-mail e/ou senha estão errados');
   }
 
-  return { token: 'string' };
+  return user.generateToken();
 };
 
 
