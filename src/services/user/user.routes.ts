@@ -1,7 +1,7 @@
 import {
   Server, Request, Response, Next,
 } from 'restify';
-import { login } from './user.service';
+import { login, register } from './user.service';
 import { authenticated } from '../../middlewares';
 
 export default (server: Server): void => {
@@ -17,9 +17,16 @@ export default (server: Server): void => {
     next();
   });
 
-  server.post('/auth/register', (req: Request, res: Response, next: Next): void => {
-    res.statusCode = 201;
-    res.send();
+  server.post('/auth/register', async (req: Request, res: Response, next: Next): Promise<void> => {
+    const { name, email, password } = req.body;
+    const token = await register(name, email, password);
+    if (typeof token === 'string') {
+      res.setHeader('Set-Cookie', `token=${token}; HttpOnly`);
+      res.statusCode = 201;
+      res.send();
+    } else {
+      res.send(token);
+    }
     next();
   });
 

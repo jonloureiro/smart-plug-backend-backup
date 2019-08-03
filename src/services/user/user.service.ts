@@ -27,5 +27,29 @@ const login = async (email: string, password: string): Promise<string | HttpErro
   return user.generateToken();
 };
 
+const register = async (
+  name: string, email: string, password: string,
+): Promise<string | HttpError> => {
+  if (!validator.isEmail(email)) {
+    return new BadRequestError('E-mail inválida');
+  }
 
-export { login };
+  if (!(validator.minLength(password, 6) && validator.maxLength(password, 255))) {
+    return new BadRequestError('Senha inválida');
+  }
+
+  if (!(validator.minLength(name, 1) && validator.maxLength(name, 255))) {
+    return new BadRequestError('Nome inválida');
+  }
+
+  if (await User.findOne({ email }) === undefined) {
+    return new BadRequestError('E-mail já em uso');
+  }
+
+  const user = await User.create({ name, email, password }).save();
+
+  return user.generateToken();
+};
+
+
+export { login, register };
