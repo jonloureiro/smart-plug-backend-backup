@@ -42,7 +42,10 @@ const register = async (
     return new BadRequestError('Nome inválida');
   }
 
-  if (await User.findOne({ email }) === undefined) {
+
+  const hasUser = await User.findOne({ email });
+
+  if (hasUser !== undefined) {
     return new BadRequestError('E-mail já em uso');
   }
 

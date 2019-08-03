@@ -10,7 +10,7 @@
     "build": "tsc",
     "dev": "nodemon -e ts --exec 'yarn build&& node dist/main.js'",
     "lint": "eslint --ext .ts src/",
-    "clean": "rm dist coverage yarn-Rf",
+    "clean": "rm dist coverage -Rf",
     "test": "jest",
     "tdd": "yarn test --watch",
     "cover": "yarn test --coverage",
@@ -53,11 +53,13 @@
     "typescript": "^3.5.3"
   },
   "jest": {
+    "roots": ["<rootDir>/src"],
     "bail": true,
     "collectCoverageFrom": ["src/**"],
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
-    }
+    },
+    "moduleFileExtensions": ["ts", "js", "json", "node"]
   },
   "author": {
     "name": "Jonathan Loureiro",

@@ -25,7 +25,7 @@ beforeEach(async (): Promise<void> => {
 
 describe('Integration', (): void => {
   describe('Register', (): void => {
-    it('should register new account when email not repeated', async (): Promise<void> => {
+    it('should register new account when data validate', async (): Promise<void> => {
       const { status } = await request(server).post('/auth/register').send(UserFactory());
       expect(status).toBe(201);
     });
