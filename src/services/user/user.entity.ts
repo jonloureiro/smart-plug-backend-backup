@@ -2,6 +2,10 @@ import {
   Entity, Unique, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn,
   UpdateDateColumn, BeforeInsert,
 } from 'typeorm';
+import {
+  IsEmail, IsString, MinLength, MaxLength,
+} from 'class-validator';
+
 
 import { hash } from 'bcrypt';
 
@@ -13,12 +17,19 @@ class User extends BaseEntity {
   id!: number;
 
   @Column('varchar', { length: 255 })
+  @IsEmail({}, { message: 'E-mail inválido.' })
   email!: string;
 
   @Column('varchar', { length: 255 })
+  @IsString()
+  @MinLength(1, { message: 'Necessário um nome.' })
+  @MaxLength(255, { message: 'Nome muito grande.' })
   name!: string;
 
-  @Column('text')
+  @Column('varchar', { length: 255 })
+  @IsString()
+  @MinLength(6, { message: 'Senha muito pequena.' })
+  @MaxLength(255, { message: 'Senha muito grande.' })
   password!: string;
 
   @CreateDateColumn()
