@@ -1,6 +1,7 @@
 import { createConnection, getConnection } from 'typeorm';
 import request from 'supertest';
 import { compare } from 'bcrypt';
+import { name, internet } from 'faker';
 import server from '../../server';
 import { config } from '../../database';
 import User from './user.entity';
@@ -25,11 +26,11 @@ beforeEach(async (): Promise<void> => {
 
 describe('Integration', (): void => {
   describe('Register', (): void => {
-    it('should register new account if email not repeated', async (): Promise<void> => {
+    it('should register new account when email not repeated', async (): Promise<void> => {
       const user = {
-        name: 'Jonathan',
-        email: 'me@jonloureiro.dev',
-        password: '123456',
+        name: name.findName(),
+        email: internet.email(),
+        password: internet.password(),
       };
 
       const response = await request(server).post('/auth/register').send(user);
@@ -38,6 +39,7 @@ describe('Integration', (): void => {
   });
 
   describe('Login', (): void => {
+
   });
 });
 
@@ -45,8 +47,8 @@ describe('Integration', (): void => {
 describe('Units', (): void => {
   it('should encrypt user password', async (): Promise<void> => {
     const user = await User.create({
-      name: 'Jonathan',
-      email: 'me@jonloureiro.dev',
+      name: name.findName(),
+      email: internet.email(),
       password: '123456',
     }).save();
 
