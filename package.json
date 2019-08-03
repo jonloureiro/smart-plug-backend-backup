@@ -21,6 +21,7 @@
     "bcrypt": "^3.0.6",
     "class-validator": "^0.9.1",
     "faker": "^4.1.0",
+    "jsonwebtoken": "^8.5.1",
     "pg": "^7.12.0",
     "reflect-metadata": "^0.1.13",
     "restify": "^8.3.3",
@@ -32,6 +33,7 @@
   "devDependencies": {
     "@types/faker": "^4.1.5",
     "@types/jest": "^24.0.16",
+    "@types/jsonwebtoken": "^8.3.2",
     "@types/node": "^12.6.8",
     "@types/restify": "^7.2.12",
     "@types/restify-errors": "^4.3.3",
