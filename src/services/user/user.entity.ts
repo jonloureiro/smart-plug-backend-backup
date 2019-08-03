@@ -22,7 +22,7 @@ class User extends BaseEntity {
 
   @Column('varchar', { length: 255 })
   @IsString()
-  @MinLength(1, { message: 'Necessário um nome.' })
+  @MinLength(2, { message: 'Necessário um nome.' })
   @MaxLength(255, { message: 'Nome muito grande.' })
   name!: string;
 

@@ -38,7 +38,7 @@ const register = async (
     return new BadRequestError('Senha inválida');
   }
 
-  if (!(validator.minLength(name, 1) && validator.maxLength(name, 255))) {
+  if (!(validator.minLength(name, 2) && validator.maxLength(name, 255))) {
     return new BadRequestError('Nome inválida');
   }
 
@@ -50,6 +50,7 @@ const register = async (
   }
 
   const user = await User.create({ name, email, password }).save();
+
 
   return user.generateToken();
 };
