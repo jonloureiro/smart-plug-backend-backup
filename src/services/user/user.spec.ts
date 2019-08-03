@@ -60,7 +60,7 @@ describe('Integration', (): void => {
     });
 
     it('should not register when name invalid', async (): Promise<void> => {
-      const userFactory = UserFactory({ name: '' });
+      const userFactory = UserFactory({ name: 'a' });
       const { status, body } = await request(server).post('/auth/register').send(userFactory);
       expect(status).toBe(400);
       expect(body.message).toBe('Nome inválida');
