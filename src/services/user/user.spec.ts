@@ -26,19 +26,19 @@ describe('Integration', (): void => {
   describe('Register', (): void => {
     it('should register new account when data validate', async (): Promise<void> => {
       const { status } = await request(server).post('/auth/register').send(UserFactory());
-      expect(status).toBe(201);
+      expect(status).toEqual(201);
     });
 
     it('should register new account when email repeated', async (): Promise<void> => {
       const user = await User.create(UserFactory()).save();
       const { status, body } = await request(server).post('/auth/register').send(user);
-      expect(status).toBe(400);
+      expect(status).toEqual(400);
       expect(body.message).toBe('E-mail já em uso');
     });
 
     it('should receive jwt when register with sucess', async (): Promise<void> => {
       const { status, header } = await request(server).post('/auth/register').send(UserFactory());
-      expect(status).toBe(201);
+      expect(status).toEqual(201);
       expect(header).toHaveProperty('set-cookie');
       const token = header['set-cookie'][0].split('=')[1].split(';')[0];
       const decoded = User.checkToken(token);
@@ -48,21 +48,21 @@ describe('Integration', (): void => {
     it('should not register when password is small', async (): Promise<void> => {
       const userFactory = UserFactory({ password: '12345' });
       const { status, body } = await request(server).post('/auth/register').send(userFactory);
-      expect(status).toBe(400);
+      expect(status).toEqual(400);
       expect(body.message).toBe('Senha inválida');
     });
 
     it('should not register when email invalid', async (): Promise<void> => {
       const userFactory = UserFactory({ email: 'me@jonloureiro' });
       const { status, body } = await request(server).post('/auth/register').send(userFactory);
-      expect(status).toBe(400);
+      expect(status).toEqual(400);
       expect(body.message).toBe('E-mail inválida');
     });
 
     it('should not register when name invalid', async (): Promise<void> => {
       const userFactory = UserFactory({ name: 'a' });
       const { status, body } = await request(server).post('/auth/register').send(userFactory);
-      expect(status).toBe(400);
+      expect(status).toEqual(400);
       expect(body.message).toBe('Nome inválida');
     });
   });
@@ -73,7 +73,7 @@ describe('Integration', (): void => {
       const userFactory = UserFactory();
       await User.create(userFactory).save();
       const { status } = await request(server).post('/auth/login').send(userFactory);
-      expect(status).toBe(200);
+      expect(status).toEqual(200);
     });
 
     it('should not login when password invalid', async (): Promise<void> => {
@@ -81,7 +81,7 @@ describe('Integration', (): void => {
       await User.create(userFactory).save();
       userFactory.password = '123456';
       const { status, body } = await request(server).post('/auth/login').send(userFactory);
-      expect(status).toBe(400);
+      expect(status).toEqual(400);
       expect(body.message).toBe('E-mail e/ou senha estão errados');
     });
 
@@ -90,7 +90,7 @@ describe('Integration', (): void => {
       await User.create(userFactory).save();
       userFactory.password = '1234';
       const { status, body } = await request(server).post('/auth/login').send(userFactory);
-      expect(status).toBe(400);
+      expect(status).toEqual(400);
       expect(body.message).toBe('Senha inválida');
     });
 
@@ -99,7 +99,7 @@ describe('Integration', (): void => {
       await User.create(userFactory).save();
       userFactory.email = 'me@jonloureiro';
       const { status, body } = await request(server).post('/auth/login').send(userFactory);
-      expect(status).toBe(400);
+      expect(status).toEqual(400);
       expect(body.message).toBe('E-mail inválida');
     });
 
@@ -108,7 +108,7 @@ describe('Integration', (): void => {
       await User.create(userFactory).save();
       userFactory.email = 'me@jonloureiro.dev';
       const { status, body } = await request(server).post('/auth/login').send(userFactory);
-      expect(status).toBe(400);
+      expect(status).toEqual(400);
       expect(body.message).toBe('E-mail não cadastrado');
     });
 
@@ -116,7 +116,7 @@ describe('Integration', (): void => {
       const userFactory = UserFactory();
       await User.create(userFactory).save();
       const { status, header } = await request(server).post('/auth/login').send(userFactory);
-      expect(status).toBe(200);
+      expect(status).toEqual(200);
       expect(header).toHaveProperty('set-cookie');
       const token = header['set-cookie'][0].split('=')[1].split(';')[0];
       const decoded = User.checkToken(token);
@@ -128,18 +128,18 @@ describe('Integration', (): void => {
       const user = await User.create(userFactory).save();
       const token = user.generateToken();
       const { status } = await request(server).get('/auth/private').set('Cookie', [`token=${token}`]);
-      expect(status).toBe(200);
+      expect(status).toEqual(200);
     });
 
     it('should not to access private route when not authenticated', async (): Promise<void> => {
       const { status, body } = await request(server).get('/auth/private');
-      expect(status).toBe(401);
+      expect(status).toEqual(401);
       expect(body.message).toBe('Acesso negado');
     });
 
     it('should not to access private route when token invalid', async (): Promise<void> => {
       const { status, body } = await request(server).get('/auth/private').set('Cookie', ['token=mytoken']);
-      expect(status).toBe(401);
+      expect(status).toEqual(401);
       expect(body.message).toBe('Acesso negado');
     });
   });
