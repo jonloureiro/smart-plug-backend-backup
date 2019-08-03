@@ -56,7 +56,7 @@ class User extends BaseEntity {
     try {
       return jwt.verify(token, secret);
     } catch (error) {
-      return `${error.message}`;
+      return 'Acesso negado';
     }
   }
 }

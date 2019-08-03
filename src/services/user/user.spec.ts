@@ -161,4 +161,11 @@ describe('Units', (): void => {
     const decoded = User.checkToken(token);
     expect(decoded).toHaveProperty('id');
   });
+
+  it('should invalidate user token', async (): Promise<void> => {
+    const user = await User.create(UserFactory()).save();
+    const token = `${user.generateToken()}2`;
+    const decoded = User.checkToken(token);
+    expect(decoded).toBe('Acesso negado');
+  });
 });
