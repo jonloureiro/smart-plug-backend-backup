@@ -18,8 +18,7 @@ afterAll(async (): Promise<void> => {
 
 beforeEach(async (): Promise<void> => {
   await getConnection()
-    .createQueryBuilder()
-    .delete().from(User);
+    .query('DELETE FROM "user"');
 });
 
 
