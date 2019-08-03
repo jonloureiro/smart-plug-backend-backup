@@ -2,12 +2,18 @@ import {
   Server, Request, Response, Next,
 } from 'restify';
 import { login } from './user.service';
+import { authenticated } from '../../middlewares';
 
 export default (server: Server): void => {
   server.post('/auth/login', async (req: Request, res: Response, next: Next): Promise<void> => {
     const { email, password } = req.body;
     const token = await login(email, password);
-    res.send(token);
+    if (typeof token === 'string') {
+      res.setHeader('Set-Cookie', `token=${token}; HttpOnly`);
+      res.send();
+    } else {
+      res.send(token);
+    }
     next();
   });
 
@@ -16,4 +22,11 @@ export default (server: Server): void => {
     res.send();
     next();
   });
+
+  server.get('/auth/private',
+    authenticated,
+    async (req: Request, res: Response, next: Next): Promise<void> => {
+      res.send();
+      next();
+    });
 };
