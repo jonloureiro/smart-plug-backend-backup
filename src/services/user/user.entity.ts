@@ -52,7 +52,7 @@ class User extends BaseEntity {
     return jwt.sign({ id: this.id }, secret, { expiresIn });
   }
 
-  checkToken(token: string): string | object {
+  static checkToken(token: string): string | object {
     try {
       return jwt.verify(token, secret);
     } catch (error) {
