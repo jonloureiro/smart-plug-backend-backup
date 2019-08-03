@@ -5,17 +5,27 @@ import server from '../../server';
 import { config } from '../../database';
 import User from './user.entity';
 
+
 beforeAll(async (): Promise<void> => {
   await createConnection(config);
 });
+
 
 afterAll(async (): Promise<void> => {
   await getConnection().close();
 });
 
+
+beforeEach(async (): Promise<void> => {
+  await getConnection()
+    .createQueryBuilder()
+    .delete().from(User);
+});
+
+
 describe('Integration', (): void => {
   describe('Register', (): void => {
-    it('should register new account if email not repeated ', async (): Promise<void> => {
+    it('should register new account if email not repeated', async (): Promise<void> => {
       const user = {
         name: 'Jonathan',
         email: 'me@jonloureiro.dev',
