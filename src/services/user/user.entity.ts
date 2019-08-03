@@ -29,7 +29,6 @@ class User extends BaseEntity {
 
   @BeforeInsert()
   private async encryptPassword(): Promise<void> {
-    console.log(this.password);
     this.password = await hash(this.password, 10);
   }
 }
