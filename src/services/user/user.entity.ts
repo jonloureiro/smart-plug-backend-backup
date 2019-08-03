@@ -5,9 +5,7 @@ import {
 import {
   IsEmail, IsString, MinLength, MaxLength,
 } from 'class-validator';
-
-
-import { hash } from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 
 
 @Entity()
@@ -41,6 +39,11 @@ class User extends BaseEntity {
   @BeforeInsert()
   private async encryptPassword(): Promise<void> {
     this.password = await hash(this.password, 10);
+  }
+
+  async checkPassword(password: string): Promise<boolean> {
+    const checkPassword = await compare(password, this.password);
+    return checkPassword;
   }
 }
 
