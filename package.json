@@ -6,7 +6,7 @@
   "main": "src/main.ts",
   "scripts": {
     "postinstall": "yarn build",
-    "start": "node dist/index.js",
+    "start": "node dist/main.js",
     "build": "tsc",
     "dev": "nodemon -e ts --exec 'yarn build&& node dist/main.js'",
     "lint": "eslint --ext .ts src/",
