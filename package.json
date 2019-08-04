@@ -54,28 +54,13 @@
   },
   "jest": {
     "bail": true,
-    "globals": {
-      "ts-jest": {
-        "tsConfig": "tsconfig.json"
-      }
-    },
-    "transform": {
-      "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testMatch": [
-      "**/__tests__/**/*.ts?(x)",
-      "**/?(*.)+(spec|test).ts?(x)"
-    ],
     "collectCoverageFrom": [
       "src/**"
     ],
-    "moduleFileExtensions": [
-      "ts",
-      "js",
-      "json",
-      "node"
-    ]
+    "testMatch": [
+      "**/?(*.)+(spec|test).ts?(x)"
+    ],
+    "preset": "ts-jest"
   },
   "author": {
     "name": "Jonathan Loureiro",
