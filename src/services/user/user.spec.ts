@@ -1,6 +1,6 @@
 import { createConnection, getConnection } from 'typeorm';
 import request from 'supertest';
-import { UserFactory } from './user.utils';
+import { UserFactory } from './user.utils-spec';
 import server from '../../server';
 import { config } from '../../database';
 import User from './user.entity';

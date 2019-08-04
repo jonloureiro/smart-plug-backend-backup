@@ -17,20 +17,18 @@
     "typeorm": "ts-node node_modules/typeorm/cli -f ./src/database/config.ts"
   },
   "dependencies": {
-    "@types/bcrypt": "^3.0.0",
     "bcrypt": "^3.0.6",
     "class-validator": "^0.9.1",
-    "faker": "^4.1.0",
     "jsonwebtoken": "^8.5.1",
     "pg": "^7.12.0",
     "reflect-metadata": "^0.1.13",
     "restify": "^8.3.3",
     "restify-errors": "^8.0.1",
-    "supertest": "^4.0.2",
     "typeorm": "^0.2.18",
     "ws": "^7.1.1"
   },
   "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
     "@types/faker": "^4.1.5",
     "@types/jest": "^24.0.16",
     "@types/jsonwebtoken": "^8.3.2",
@@ -45,21 +43,39 @@
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.2.0",
     "eslint-plugin-import": "^2.18.2",
+    "faker": "^4.1.0",
     "husky": "^3.0.2",
-    "jest": "^24.8.0",
+    "jest": "~24.0.0",
     "nodemon": "^1.19.1",
-    "ts-jest": "^24.0.2",
+    "supertest": "^4.0.2",
+    "ts-jest": "~24.0.0",
     "ts-node": "^8.3.0",
     "typescript": "^3.5.3"
   },
   "jest": {
-    "roots": ["<rootDir>/src"],
     "bail": true,
-    "collectCoverageFrom": ["src/**"],
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "tsconfig.json"
+      }
+    },
     "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
       "^.+\\.tsx?$": "ts-jest"
     },
-    "moduleFileExtensions": ["ts", "js", "json", "node"]
+    "testMatch": [
+      "**/__tests__/**/*.ts?(x)",
+      "**/?(*.)+(spec|test).ts?(x)"
+    ],
+    "collectCoverageFrom": [
+      "src/**"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json",
+      "node"
+    ]
   },
   "author": {
     "name": "Jonathan Loureiro",
