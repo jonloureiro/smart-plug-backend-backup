@@ -12,6 +12,7 @@ export = (req: Request, res: Response, next: Next): void => {
     verify(token, secret);
     next();
   } catch (error) {
+    res.setHeader('Set-Cookie', 'token=; HttpOnly');
     next(new UnauthorizedError('Acesso negado'));
   }
 };
