@@ -143,7 +143,7 @@ describe('Integration', (): void => {
       expect(body.message).toBe('Acesso negado');
     });
 
-    it.only('should set-cookie empty when access private route with token invalid', async (): Promise<void> => {
+    it('should set-cookie empty when access private route with token invalid', async (): Promise<void> => {
       const { status, header } = await request(server).get('/auth/private').set('Cookie', ['token=mytoken']);
       expect(status).toEqual(401);
       expect(header).toHaveProperty('set-cookie');
