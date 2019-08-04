@@ -29,7 +29,7 @@ describe('Integration', (): void => {
       expect(status).toEqual(201);
     });
 
-    it('should register new account when email repeated', async (): Promise<void> => {
+    it('should not register new account when email repeated', async (): Promise<void> => {
       const user = await User.create(UserFactory()).save();
       const { status, body } = await request(server).post('/auth/register').send(user);
       expect(status).toEqual(400);
