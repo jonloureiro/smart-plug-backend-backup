@@ -36,4 +36,10 @@ export default (server: Server): void => {
       res.send();
       next();
     });
+
+  server.post('/auth/logout', async (req: Request, res: Response, next: Next): Promise<void> => {
+    res.setHeader('Set-Cookie', 'token=; HttpOnly');
+    res.send();
+    next();
+  });
 };

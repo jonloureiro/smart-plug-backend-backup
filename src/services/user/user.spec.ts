@@ -151,6 +151,21 @@ describe('Integration', (): void => {
       expect(token).toBe('');
     });
   });
+
+
+  describe('Logout', (): void => {
+    it('should set-cookie empty when access /auth/logout', async (): Promise<void> => {
+      const loginRes = await request(server).post('/auth/logout').send(UserFactory());
+      expect(loginRes.status).toEqual(200);
+      expect(loginRes.header).toHaveProperty('set-cookie');
+      const token = loginRes.header['set-cookie'][0].split('=')[1].split(';')[0];
+      const logoutRes = await request(server).post('/auth/logout').set('Cookie', [`token=${token}`]);
+      expect(logoutRes.status).toEqual(200);
+      expect(logoutRes.header).toHaveProperty('set-cookie');
+      const tokenEmpty = logoutRes.header['set-cookie'][0].split('=')[1].split(';')[0];
+      expect(tokenEmpty).toBe('');
+    });
+  });
 });
 
 
