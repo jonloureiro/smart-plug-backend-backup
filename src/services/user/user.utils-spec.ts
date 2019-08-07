@@ -1,9 +1,21 @@
 import faker from 'faker';
 import { Validator } from 'class-validator';
+import { ResidenceEntity } from '../residence';
 
 
-interface UserFactory { name: string; email: string; password: string }
-interface UserOptions { name?: string; email?: string; password?: string }
+interface UserFactory {
+  name: string;
+  email: string;
+  password: string;
+  residence?: ResidenceEntity;
+}
+
+interface UserOptions {
+  name?: string;
+  email?: string;
+  password?: string;
+  residence?: ResidenceEntity;
+}
 
 const validator = new Validator();
 
@@ -27,5 +39,6 @@ export const UserFactory = (options?: UserOptions): UserFactory => {
     name: options.name || faker.name.findName(),
     email: options.email || email,
     password: options.password || faker.internet.password(),
+    residence: options.residence,
   };
 };

@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import {
   Entity, Unique, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn,
-  UpdateDateColumn, BeforeInsert,
+  UpdateDateColumn, BeforeInsert, ManyToOne,
 } from 'typeorm';
 import {
   IsEmail, IsString, MinLength, MaxLength,
@@ -8,6 +9,7 @@ import {
 import { compare, hash } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { secret, expiresIn } from '../../config';
+import { ResidenceEntity } from '../residence';
 
 
 @Entity()
@@ -31,6 +33,11 @@ class User extends BaseEntity {
   @MinLength(6, { message: 'Senha muito pequena.' })
   @MaxLength(255, { message: 'Senha muito grande.' })
   password!: string;
+
+  @ManyToOne(() => ResidenceEntity, residence => residence.users, {
+    onDelete: 'SET NULL',
+  })
+  residence?: ResidenceEntity;
 
   @CreateDateColumn()
   createdAt!: Date;
