@@ -1,8 +1,8 @@
 import { Server, plugins } from 'restify';
-import authenticated from './authenticated';
+import authenticated, { RequestAuthenticated } from './authenticated';
 
 
-export { authenticated };
+export { authenticated, RequestAuthenticated };
 
 export default (server: Server): void => {
   server.use(plugins.bodyParser());

@@ -15,13 +15,13 @@ interface ResidenceOptions {
 
 const validator = new Validator();
 
-const nameValid = (): string => {
+export const ResidenceName = (): string => {
   const name = faker.lorem.words(10).substr(0, 36).toLowerCase();
   if (validator.maxLength(name, 50)) return name;
-  return nameValid();
+  return ResidenceName();
 };
 
 export const ResidenceFactory = (options: ResidenceOptions): ResidenceFactory => ({
-  name: options.name || nameValid(),
+  name: options.name || ResidenceName(),
   admin: options.admin,
 });
