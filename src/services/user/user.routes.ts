@@ -6,7 +6,7 @@ import { authenticated } from '../../middlewares';
 
 export default (server: Server): void => {
   server.post('/auth/login', async (req: Request, res: Response, next: Next): Promise<void> => {
-    const { email, password } = req.body;
+    const { email, password } = req.body || { email: '', password: '' };
     const token = await login(email, password);
     if (typeof token === 'string') {
       res.setHeader('Set-Cookie', `token=${token}; HttpOnly`);
@@ -18,7 +18,7 @@ export default (server: Server): void => {
   });
 
   server.post('/auth/register', async (req: Request, res: Response, next: Next): Promise<void> => {
-    const { name, email, password } = req.body;
+    const { name, email, password } = req.body || { name: '', email: '', password: '' };
     const token = await register(name, email, password);
     if (typeof token === 'string') {
       res.setHeader('Set-Cookie', `token=${token}; HttpOnly`);

@@ -65,6 +65,11 @@ describe('Integration', (): void => {
       expect(status).toEqual(400);
       expect(body.message).toBe('Nome inválida');
     });
+
+    it('should return Bad Request when body request not exist', async (): Promise<void> => {
+      const { status } = await request(server).post('/auth/register');
+      expect(status).toEqual(400);
+    });
   });
 
 
@@ -149,6 +154,11 @@ describe('Integration', (): void => {
       expect(header).toHaveProperty('set-cookie');
       const token = header['set-cookie'][0].split('=')[1].split(';')[0];
       expect(token).toBe('');
+    });
+
+    it('should return Bad Request when body request not exist', async (): Promise<void> => {
+      const { status } = await request(server).post('/auth/login');
+      expect(status).toEqual(400);
     });
   });
 
