@@ -9,7 +9,7 @@ export default (server: Server): void => {
     const { email, password } = req.body || { email: '', password: '' };
     const token = await login(email, password);
     if (typeof token === 'string') {
-      res.setHeader('Set-Cookie', `token=${token}; HttpOnly`);
+      res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Path=/`);
       res.send();
     } else {
       res.send(token);
@@ -21,7 +21,7 @@ export default (server: Server): void => {
     const { name, email, password } = req.body || { name: '', email: '', password: '' };
     const token = await register(name, email, password);
     if (typeof token === 'string') {
-      res.setHeader('Set-Cookie', `token=${token}; HttpOnly`);
+      res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Path=/`);
       res.statusCode = 201;
       res.send();
     } else {
@@ -38,7 +38,7 @@ export default (server: Server): void => {
     });
 
   server.post('/auth/logout', async (req: Request, res: Response, next: Next): Promise<void> => {
-    res.setHeader('Set-Cookie', 'token=; HttpOnly');
+    res.setHeader('Set-Cookie', 'token=; HttpOnly; Path=/');
     res.send();
     next();
   });
