@@ -1,6 +1,6 @@
 import { BadRequestError, HttpError } from 'restify-errors';
 import { Validator } from 'class-validator';
-import User from './user.entity';
+import { UserEntity } from './index';
 
 
 const validator = new Validator();
@@ -14,7 +14,7 @@ const login = async (email: string, password: string): Promise<string | HttpErro
     return new BadRequestError('Senha inválida');
   }
 
-  const user = await User.findOne({ email });
+  const user = await UserEntity.findOne({ email });
 
   if (user === undefined) {
     return new BadRequestError('E-mail não cadastrado');
@@ -43,14 +43,14 @@ const register = async (
   }
 
   try {
-    if (await User.findOne({ email }) !== undefined) {
+    if (await UserEntity.findOne({ email }) !== undefined) {
       return new BadRequestError('E-mail já em uso');
     }
   } catch (error) {
     return new BadRequestError('E-mail já em uso');
   }
 
-  const user = await User.create({ name, email, password }).save();
+  const user = await UserEntity.create({ name, email, password }).save();
 
 
   return user.generateToken();
