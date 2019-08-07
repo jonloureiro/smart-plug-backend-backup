@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import {
   Entity, Unique, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn,
-  UpdateDateColumn, BeforeInsert, ManyToOne,
+  UpdateDateColumn, BeforeInsert, ManyToOne, ObjectType,
 } from 'typeorm';
 import {
   IsEmail, IsString, MinLength, MaxLength,
@@ -34,9 +33,13 @@ class User extends BaseEntity {
   @MaxLength(255, { message: 'Senha muito grande.' })
   password!: string;
 
-  @ManyToOne(() => ResidenceEntity, residence => residence.users, {
-    onDelete: 'SET NULL',
-  })
+  @ManyToOne(
+    (): ObjectType<ResidenceEntity> => ResidenceEntity,
+    (residence): User[] => residence.users,
+    {
+      onDelete: 'SET NULL',
+    },
+  )
   residence?: ResidenceEntity;
 
   @CreateDateColumn()

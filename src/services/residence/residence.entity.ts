@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import {
   Entity, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn,
-  UpdateDateColumn, OneToMany,
+  UpdateDateColumn, OneToMany, ObjectType,
 } from 'typeorm';
 import {
   IsString, MinLength, MaxLength,
@@ -20,11 +19,15 @@ class Residence extends BaseEntity {
   @MaxLength(255, { message: 'Nome muito grande.' })
   name!: string;
 
-  @OneToMany(() => UserEntity, user => user.residence, {
-    eager: true,
-    onDelete: 'RESTRICT',
-    nullable: false,
-  })
+  @OneToMany(
+    (): ObjectType<UserEntity> => UserEntity,
+    (user): Residence | undefined => user.residence,
+    {
+      eager: true,
+      onDelete: 'RESTRICT',
+      nullable: false,
+    },
+  )
   users!: UserEntity[];
 
   @CreateDateColumn()
