@@ -7,7 +7,13 @@ import { UserEntity } from './index';
 
 
 beforeAll(async (): Promise<void> => {
-  await createConnection(config);
+  try {
+    await createConnection(config);
+  } catch (e) {
+    const connection = getConnection();
+    await connection.connect();
+    await connection.synchronize();
+  }
 });
 
 
