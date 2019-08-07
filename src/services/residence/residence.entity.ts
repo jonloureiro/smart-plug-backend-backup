@@ -1,23 +1,30 @@
 import {
   Entity, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn,
-  UpdateDateColumn, OneToMany, ObjectType,
+  UpdateDateColumn, OneToMany, ObjectType, Unique, BeforeInsert,
 } from 'typeorm';
-import {
-  IsString, MinLength, MaxLength,
-} from 'class-validator';
 import { UserEntity } from '../user';
+import { hashVerified } from './residence.utils';
 
 
 @Entity()
+@Unique(['name'])
 class Residence extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Column('varchar', { length: 255 })
-  @IsString()
-  @MinLength(2, { message: 'Necessário um nome.' })
-  @MaxLength(255, { message: 'Nome muito grande.' })
   name!: string;
+
+  @OneToMany(
+    (): ObjectType<UserEntity> => UserEntity,
+    (user): Residence | undefined => user.residence,
+    {
+      eager: true,
+      onDelete: 'RESTRICT',
+      nullable: false,
+    },
+  )
+  admin!: UserEntity;
 
   @OneToMany(
     (): ObjectType<UserEntity> => UserEntity,
@@ -35,6 +42,12 @@ class Residence extends BaseEntity {
 
   @UpdateDateColumn()
   updatedAt!: Date;
+
+  @BeforeInsert()
+  private async hashingName(): Promise<void> {
+    const hash = await hashVerified(this.name);
+    this.name = `${this.name}#${hash}`;
+  }
 }
 
 
