@@ -21,26 +21,14 @@ class Residence extends BaseEntity {
     {
       eager: true,
       onDelete: 'RESTRICT',
-      nullable: false,
-    },
-  )
-  admin!: UserEntity;
-
-  @OneToMany(
-    (): ObjectType<UserEntity> => UserEntity,
-    (user): Residence | undefined => user.residence,
-    {
-      eager: true,
-      onDelete: 'RESTRICT',
-      nullable: false,
     },
   )
   users!: UserEntity[];
 
-  @CreateDateColumn()
+  @CreateDateColumn({ select: false })
   createdAt!: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ select: false })
   updatedAt!: Date;
 
   @BeforeInsert()
@@ -52,6 +40,13 @@ class Residence extends BaseEntity {
   @BeforeInsert()
   private removeSpace(): void {
     this.name = this.name.replace(/(^[\s]+|[\s]+$)/g, '');
+  }
+
+  @BeforeInsert()
+  private async addingAdmin(): Promise<void> {
+    const user = this.users[0];
+    user.admin = true;
+    await user.save();
   }
 }
 
