@@ -2,9 +2,6 @@ import {
   Entity, Unique, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn,
   UpdateDateColumn, BeforeInsert, ManyToOne, ObjectType,
 } from 'typeorm';
-import {
-  IsEmail, IsString, MinLength, MaxLength,
-} from 'class-validator';
 import { compare, hash } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { secret, expiresIn } from '../../config';
@@ -18,20 +15,16 @@ class User extends BaseEntity {
   id!: number;
 
   @Column('varchar', { length: 255 })
-  @IsEmail({}, { message: 'E-mail inválido.' })
   email!: string;
 
   @Column('varchar', { length: 255 })
-  @IsString()
-  @MinLength(2, { message: 'Necessário um nome.' })
-  @MaxLength(255, { message: 'Nome muito grande.' })
   name!: string;
 
-  @Column('varchar', { length: 255 })
-  @IsString()
-  @MinLength(6, { message: 'Senha muito pequena.' })
-  @MaxLength(255, { message: 'Senha muito grande.' })
+  @Column('varchar', { select: false, length: 255 })
   password!: string;
+
+  @Column('bool')
+  admin!: boolean;
 
   @ManyToOne(
     (): ObjectType<ResidenceEntity> => ResidenceEntity,
@@ -42,15 +35,20 @@ class User extends BaseEntity {
   )
   residence?: ResidenceEntity;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ select: false })
   createdAt!: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ select: false })
   updatedAt!: Date;
 
   @BeforeInsert()
   private async encryptPassword(): Promise<void> {
     this.password = await hash(this.password, 10);
+  }
+
+  @BeforeInsert()
+  private setAdminFalse(): void {
+    this.admin = false;
   }
 
   async checkPassword(password: string): Promise<boolean> {
