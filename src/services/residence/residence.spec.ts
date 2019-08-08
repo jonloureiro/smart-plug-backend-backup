@@ -47,7 +47,7 @@ describe('Integration', (): void => {
     expect(status).toEqual(201);
     expect(body).toHaveProperty('data');
     const { name } = body.data;
-    expect(name).toBe(residenceFactory.name);
+    expect(name).toBe(residenceFactory.name.replace(/(^[\s]+|[\s]+$)/g, ''));
   });
 
   it('should return bad request when body request is empty', async (): Promise<void> => {
