@@ -20,7 +20,7 @@ class User extends BaseEntity {
   @Column('varchar', { length: 255 })
   name!: string;
 
-  @Column('varchar', { select: false, length: 255 })
+  @Column('varchar', { length: 255 })
   password!: string;
 
   @Column('bool')
