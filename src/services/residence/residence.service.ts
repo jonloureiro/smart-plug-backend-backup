@@ -17,16 +17,10 @@ const create = async (name: string, userId?: number): Promise<Data | HttpError> 
     return new BadRequestError('Nome inválido');
   }
 
-  const admin = await UserEntity.findOne({ id: userId });
-  if (admin === undefined) return new ForbiddenError('Usuário não identificado');
+  const user = await UserEntity.findOne({ id: userId });
+  if (user === undefined) return new ForbiddenError('Usuário não identificado');
 
-  const residence = await ResidenceEntity.create({ name, admin }).save();
-  const [residenceName, residenceHash] = residence.name.split('#');
-  const data = {
-    id: residence.id,
-    name: residenceName,
-    hash: residenceHash,
-  };
+  const data = await ResidenceEntity.create({ name, users: [user] }).save();
 
   return {
     code: 'Created',

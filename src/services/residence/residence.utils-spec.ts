@@ -5,7 +5,7 @@ import { UserEntity } from '../user';
 
 interface ResidenceFactory {
   name: string;
-  admin: UserEntity;
+  users: UserEntity[];
 }
 
 interface ResidenceOptions {
@@ -23,5 +23,5 @@ export const ResidenceName = (): string => {
 
 export const ResidenceFactory = (options: ResidenceOptions): ResidenceFactory => ({
   name: options.name || ResidenceName(),
-  admin: options.admin,
+  users: [options.admin],
 });
