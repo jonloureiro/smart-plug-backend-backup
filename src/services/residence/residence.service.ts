@@ -20,12 +20,7 @@ const create = async (name: string, userId?: number): Promise<Data | HttpError> 
   const admin = await UserEntity.findOne({ id: userId });
   if (admin === undefined) return new ForbiddenError('Usuário não identificado');
 
-  const residence = await ResidenceEntity.create(
-    {
-      name: name.replace(/(^[\s]+|[\s]+$)/g, ''),
-      admin,
-    },
-  ).save();
+  const residence = await ResidenceEntity.create({ name, admin }).save();
   const [residenceName, residenceHash] = residence.name.split('#');
   const data = {
     id: residence.id,

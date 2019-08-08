@@ -48,6 +48,11 @@ class Residence extends BaseEntity {
     const hash = await hashVerified(this.name);
     this.name = `${this.name}#${hash}`;
   }
+
+  @BeforeInsert()
+  private removeSpace(): void {
+    this.name = this.name.replace(/(^[\s]+|[\s]+$)/g, '');
+  }
 }
 
 

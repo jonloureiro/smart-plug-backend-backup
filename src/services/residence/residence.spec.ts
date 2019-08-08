@@ -65,9 +65,20 @@ describe('Integration', (): void => {
 describe('Units', (): void => {
   it('should generate a hash in residence name', async (): Promise<void> => {
     const residenceFactory = ResidenceFactory({ admin: user });
-    const residence = await ResidenceEntity.create(residenceFactory).save();
-    expect(residence.name).not.toBe(residenceFactory.name);
-    const hash = residence.name.split('#')[1];
+    const { name } = await ResidenceEntity.create(residenceFactory).save();
+    expect(name).not.toBe(residenceFactory.name);
+    const hash = name.split('#')[1];
     expect(hash).toHaveLength(4);
+  });
+
+  it('should remove whitespace in residence name', async (): Promise<void> => {
+    const residenceFactory = ResidenceFactory({
+      name: `${ResidenceName()} `,
+      admin: user,
+    });
+    const residence = await ResidenceEntity.create(residenceFactory).save();
+    const name = residence.name.split('#')[0];
+    expect(name).not.toBe(residenceFactory.name);
+    expect(name).toBe(residenceFactory.name.replace(/(^[\s]+|[\s]+$)/g, ''));
   });
 });
