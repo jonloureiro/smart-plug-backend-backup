@@ -29,41 +29,43 @@ afterEach(async (): Promise<void> => {
 
 
 describe('Integration', (): void => {
-  it('should create a residence when an user without residence to request POST /residences', async (): Promise<void> => {
-    const user = await UserEntity.create(UserFactory()).save();
-    const residenceFactory = { name: ResidenceName() };
-    const { status, body } = await request(server)
-      .post('/residences')
-      .set('Cookie', [`token=${user.generateToken()}`])
-      .send(residenceFactory);
+  describe('Creation of Residence', (): void => {
+    it('should create a residence when an user without residence to request POST /residences', async (): Promise<void> => {
+      const user = await UserEntity.create(UserFactory()).save();
+      const residenceFactory = { name: ResidenceName() };
+      const { status, body } = await request(server)
+        .post('/residences')
+        .set('Cookie', [`token=${user.generateToken()}`])
+        .send(residenceFactory);
 
-    expect(status).toEqual(201);
-    expect(body).toHaveProperty('data');
-    const name = body.data.name.split('#')[0];
-    expect(name).toBe(residenceFactory.name.replace(/(^[\s]+|[\s]+$)/g, ''));
-  });
+      expect(status).toEqual(201);
+      expect(body).toHaveProperty('data');
+      const name = body.data.name.split('#')[0];
+      expect(name).toBe(residenceFactory.name.replace(/(^[\s]+|[\s]+$)/g, ''));
+    });
 
-  it('should return bad request when body request is empty', async (): Promise<void> => {
-    const user = await UserEntity.create(UserFactory()).save();
-    const { status } = await request(server).post('/residences').set('Cookie', [`token=${user.generateToken()}`]);
-    expect(status).toEqual(400);
-  });
+    it('should return bad request when body request is empty', async (): Promise<void> => {
+      const user = await UserEntity.create(UserFactory()).save();
+      const { status } = await request(server).post('/residences').set('Cookie', [`token=${user.generateToken()}`]);
+      expect(status).toEqual(400);
+    });
 
-  it('should return Unauthorized Error when token not exist', async (): Promise<void> => {
-    const { status } = await request(server).post('/residences').set('Cookie', ['token=']);
-    expect(status).toEqual(401);
-  });
+    it('should return Unauthorized Error when token not exist', async (): Promise<void> => {
+      const { status } = await request(server).post('/residences').set('Cookie', ['token=']);
+      expect(status).toEqual(401);
+    });
 
-  it('should return admin when create a residence', async (): Promise<void> => {
-    const user = await UserEntity.create(UserFactory()).save();
-    const { body } = await request(server)
-      .post('/residences')
-      .set('Cookie', [`token=${user.generateToken()}`])
-      .send({ name: ResidenceName() });
+    it('should return admin when create a residence', async (): Promise<void> => {
+      const user = await UserEntity.create(UserFactory()).save();
+      const { body } = await request(server)
+        .post('/residences')
+        .set('Cookie', [`token=${user.generateToken()}`])
+        .send({ name: ResidenceName() });
 
-    expect(body).toHaveProperty('data');
-    const { data } = body;
-    expect(data).toHaveProperty('users');
+      expect(body).toHaveProperty('data');
+      const { data } = body;
+      expect(data).toHaveProperty('users');
+    });
   });
 });
 
