@@ -1,6 +1,6 @@
 import {
   Entity, Unique, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn,
-  UpdateDateColumn, BeforeInsert, ManyToOne, ObjectType,
+  UpdateDateColumn, BeforeInsert, ManyToOne, ObjectType, BeforeUpdate,
 } from 'typeorm';
 import { compare, hash } from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -49,6 +49,13 @@ class User extends BaseEntity {
   @BeforeInsert()
   private setAdminFalse(): void {
     this.admin = false;
+  }
+
+  @BeforeUpdate()
+  private updateAdmin(): void {
+    if (this.residence === undefined) {
+      this.admin = false;
+    }
   }
 
   async checkPassword(password: string): Promise<boolean> {
