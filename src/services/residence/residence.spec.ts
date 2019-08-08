@@ -3,7 +3,7 @@ import request from 'supertest';
 import server from '../../server';
 import { config } from '../../database';
 import { UserEntity, UserFactory } from '../user';
-import { ResidenceEntity, ResidenceFactory } from './index';
+import { ResidenceEntity, ResidenceFactory, ResidenceName } from './index';
 
 
 let user: UserEntity;
@@ -37,12 +37,27 @@ afterEach(async (): Promise<void> => {
 
 
 describe('Integration', (): void => {
-  it.skip('should create a residence when an user without residence to request POST /residences', async (): Promise<void> => {
-    const { status, body } = await request(server).post('/residences').set('Cookie', [`token=${user.generateToken()}`]);
+  it('should create a residence when an user without residence to request POST /residences', async (): Promise<void> => {
+    const residenceFactory = { name: ResidenceName() };
+    const { status, body } = await request(server)
+      .post('/residences')
+      .set('Cookie', [`token=${user.generateToken()}`])
+      .send(residenceFactory);
+
     expect(status).toEqual(201);
     expect(body).toHaveProperty('data');
-    const { data } = body;
-    expect(data).toHaveProperty('id').toHaveProperty('name');
+    const { name } = body.data;
+    expect(name).toBe(residenceFactory.name);
+  });
+
+  it('should return bad request when body request is empty', async (): Promise<void> => {
+    const { status } = await request(server).post('/residences').set('Cookie', [`token=${user.generateToken()}`]);
+    expect(status).toEqual(400);
+  });
+
+  it('should return Unauthorized Error when token not exist', async (): Promise<void> => {
+    const { status } = await request(server).post('/residences').set('Cookie', ['token=']);
+    expect(status).toEqual(401);
   });
 });
 
