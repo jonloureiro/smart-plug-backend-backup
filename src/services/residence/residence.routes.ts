@@ -1,8 +1,8 @@
 import {
-  Server, Request, Response, Next,
+  Server, Response, Next,
 } from 'restify';
 import { authenticated, RequestAuthenticated } from '../../middlewares';
-import { create } from './residence.service';
+import { createResidence, listResidence } from './residence.service';
 
 export default (server: Server): void => {
   server.post('/residences',
@@ -10,7 +10,7 @@ export default (server: Server): void => {
     async (req: RequestAuthenticated, res: Response, next: Next): Promise<void> => {
       const { name } = req.body || { name: '' };
       const { userId } = req;
-      const data = await create(name, userId);
+      const data = await createResidence(name, userId);
       if (data.code === 'Created') res.statusCode = 201;
       res.send(data);
       next();
@@ -18,8 +18,11 @@ export default (server: Server): void => {
 
   server.get('/residences',
     authenticated,
-    async (req: Request, res: Response, next: Next): Promise<void> => {
-      res.send();
+    async (req: RequestAuthenticated, res: Response, next: Next): Promise<void> => {
+      const { userId } = req;
+      const data = await listResidence(userId);
+      if (data.code === 'OK') res.statusCode = 200;
+      res.send(data);
       next();
     });
 };

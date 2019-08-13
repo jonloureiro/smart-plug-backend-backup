@@ -1,4 +1,6 @@
-import { BadRequestError, HttpError, ForbiddenError } from 'restify-errors';
+import {
+  BadRequestError, HttpError, ForbiddenError, NotFoundError,
+} from 'restify-errors';
 import { Validator } from 'class-validator';
 import { ResidenceEntity } from './index';
 import { UserEntity } from '../user';
@@ -10,7 +12,7 @@ interface Residence { id: number; name: string }
 
 const validator = new Validator();
 
-const create = async (name: string, userId?: number): Promise<Data | HttpError> => {
+const createResidence = async (name: string, userId?: number): Promise<Data | HttpError> => {
   if (userId === undefined) return new ForbiddenError('Usuário não identificado');
 
   if (!(validator.minLength(name, 2) && validator.maxLength(name, 50))) {
@@ -29,5 +31,23 @@ const create = async (name: string, userId?: number): Promise<Data | HttpError> 
   };
 };
 
+const listResidence = async (userId?: number): Promise<Data | HttpError> => {
+  if (userId === undefined) return new ForbiddenError('Usuário não identificado');
 
-export { create };
+  const user = await UserEntity.findOne(userId, { relations: ['residence'] });
+
+  if (user === undefined) return new ForbiddenError('Usuário não identificado');
+
+  const data = user.residence;
+
+  if (data === undefined) return new NotFoundError('Residência não encontrada');
+
+  return {
+    code: 'OK',
+    message: '',
+    data,
+  };
+};
+
+
+export { createResidence, listResidence };

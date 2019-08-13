@@ -60,6 +60,22 @@ describe('Integration', (): void => {
       expect(data).toHaveProperty('users');
     });
   });
+
+  describe('To list residence', (): void => {
+    it('should list residence when request GET /residences', async (): Promise<void> => {
+      const user = await UserEntity.create(UserFactory()).save();
+      const residenceFactory = ResidenceFactory({ admin: user });
+      const { id } = await ResidenceEntity.create(residenceFactory).save();
+      const { status, body } = await request(server)
+        .get('/residences')
+        .set('Cookie', [`token=${user.generateToken()}`]);
+
+      expect(status).toEqual(200);
+      expect(body).toHaveProperty('data');
+      const { data } = body;
+      expect(data.id).toEqual(id);
+    });
+  });
 });
 
 
