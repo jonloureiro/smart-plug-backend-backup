@@ -4,6 +4,7 @@ import {
 } from 'typeorm';
 import { UserEntity } from '../user';
 import { hashVerified } from './residence.utils';
+import { McuEntity } from '../mcu';
 
 
 @Entity()
@@ -19,11 +20,21 @@ class Residence extends BaseEntity {
     (): ObjectType<UserEntity> => UserEntity,
     (user): Residence | undefined => user.residence,
     {
-      eager: true,
       onDelete: 'RESTRICT',
     },
   )
   users!: UserEntity[];
+
+  @OneToMany(
+    (): ObjectType<McuEntity> => McuEntity,
+    (mcu): Residence | undefined => mcu.residence,
+    {
+      eager: true,
+      onDelete: 'SET NULL',
+      nullable: true,
+    },
+  )
+  mcus!: McuEntity[];
 
   @CreateDateColumn({ select: false })
   createdAt!: Date;
