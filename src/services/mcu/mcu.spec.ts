@@ -4,6 +4,7 @@ import server from '../../server';
 import { config } from '../../database';
 import { UserEntity, UserFactory } from '../user';
 import { ResidenceEntity, ResidenceFactory } from '../residence';
+import { McuFactory } from '.';
 
 
 beforeAll(async (): Promise<void> => {
@@ -27,11 +28,12 @@ describe('Integration', (): void => {
       const user = await UserEntity.create(UserFactory()).save();
       await ResidenceEntity.create(ResidenceFactory({ admin: user })).save();
       await user.reload();
-      const { status } = await request(server)
+      const { status, body } = await request(server)
         .post('/mcus')
         .set('Cookie', [`token=${user.generateToken()}`])
-        .send({ name: 'testando', mac: `${Math.random().toString().substring(3)}` });
+        .send(McuFactory());
       expect(status).toEqual(201);
+      console.log(body);
     });
   });
 });
