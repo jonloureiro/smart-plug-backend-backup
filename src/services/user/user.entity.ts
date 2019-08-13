@@ -53,9 +53,7 @@ class User extends BaseEntity {
 
   @BeforeUpdate()
   private updateAdmin(): void {
-    if (this.residence === undefined) {
-      this.admin = false;
-    }
+    // TODO checar se tem residence, caso não tenha, colocar admin como false
   }
 
   async checkPassword(password: string): Promise<boolean> {
