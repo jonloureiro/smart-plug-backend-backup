@@ -4,7 +4,7 @@ import server from '../../server';
 import { config } from '../../database';
 import { UserEntity, UserFactory } from '../user';
 import { ResidenceEntity, ResidenceFactory } from '../residence';
-import { McuFactory } from '.';
+import { McuFactory, McuEntity } from '.';
 
 
 beforeAll(async (): Promise<void> => {
@@ -33,7 +33,26 @@ describe('Integration', (): void => {
         .set('Cookie', [`token=${user.generateToken()}`])
         .send(McuFactory());
       expect(status).toEqual(201);
-      console.log(body);
+      expect(body).toHaveProperty('data');
+      const { data } = body;
+      expect(data).toHaveProperty('mac');
+    });
+  });
+
+  describe('Listing MCU', (): void => {
+    it('should return a mcu list when request get /mcu', async (): Promise<void> => {
+      const user = await UserEntity.create(UserFactory()).save();
+      const residence = await ResidenceEntity.create(ResidenceFactory({ admin: user })).save();
+      await user.reload();
+      await McuEntity.create({ ...McuFactory(), residence }).save();
+      await McuEntity.create({ ...McuFactory(), residence }).save();
+      const { status, body } = await request(server)
+        .get('/mcus')
+        .set('Cookie', [`token=${user.generateToken()}`]);
+      expect(status).toEqual(200);
+      expect(body).toHaveProperty('data');
+      const { data } = body;
+      expect(data).toHaveLength(2);
     });
   });
 });

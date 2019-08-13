@@ -4,7 +4,7 @@ import { UserEntity } from '../user';
 import { McuEntity } from '.';
 
 
-interface Data { code: string; message: string; data: McuEntity}
+interface Data { code: string; message: string; data: McuEntity | McuEntity[]}
 
 
 const validator = new Validator();
@@ -24,14 +24,13 @@ const createMcu = async (
     return new BadRequestError('MAC inválido');
   }
 
-  const user = await UserEntity.findOne({ id: userId });
+  const user = await UserEntity.findOne(userId, { relations: ['residence'] });
 
   if (user === undefined) return new ForbiddenError('Usuário não identificado');
 
   if (!user.admin) return new ForbiddenError('Usuário não autorizado');
 
-  // if (user.residence === undefined) return new ForbiddenError('Usuário não autorizado');
-  // TODO: falha na checagem da residence
+  if (user.residence === undefined) return new ForbiddenError('Usuário não autorizado');
 
   const data = await McuEntity.create({ name, mac, residence: user.residence }).save();
 
@@ -43,4 +42,32 @@ const createMcu = async (
 };
 
 
-export { createMcu };
+const listMcu = async (userId?: number): Promise<Data | HttpError> => {
+  if (userId === undefined) {
+    return new ForbiddenError('Corpo da requisição inválido');
+  }
+
+  const user = await UserEntity.findOne(userId, {
+    relations: ['residence'],
+    select: ['id'],
+  });
+
+  if (user === undefined) {
+    return new ForbiddenError('Usuário não encontrado');
+  }
+
+  const data = await McuEntity.find({
+    where: {
+      residence: user.residence,
+    },
+  });
+
+  return {
+    code: 'OK',
+    message: '',
+    data,
+  };
+};
+
+
+export { createMcu, listMcu };

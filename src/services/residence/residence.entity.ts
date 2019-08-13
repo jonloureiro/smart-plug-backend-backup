@@ -29,7 +29,6 @@ class Residence extends BaseEntity {
     (): ObjectType<McuEntity> => McuEntity,
     (mcu): Residence | undefined => mcu.residence,
     {
-      eager: true,
       onDelete: 'SET NULL',
       nullable: true,
     },
