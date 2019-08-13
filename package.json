@@ -11,7 +11,7 @@
     "dev": "nodemon -e ts --exec 'yarn build&& node dist/main.js'",
     "lint": "eslint --ext .ts src/",
     "clean": "rm dist coverage -Rf",
-    "test": "jest",
+    "test": "jest -i",
     "tdd": "yarn test --watch",
     "cover": "yarn test --coverage",
     "typeorm": "ts-node node_modules/typeorm/cli -f ./src/database/config.ts"
