@@ -7,13 +7,7 @@ import { ResidenceEntity, ResidenceFactory, ResidenceName } from './index';
 
 
 beforeAll(async (): Promise<void> => {
-  try {
-    await createConnection(config);
-  } catch (e) {
-    const connection = getConnection();
-    await connection.connect();
-    await connection.synchronize();
-  }
+  await createConnection(config);
 });
 
 
@@ -23,8 +17,7 @@ afterAll(async (): Promise<void> => {
 
 
 afterEach(async (): Promise<void> => {
-  await getConnection()
-    .query('DELETE FROM "user"');
+  await getConnection().synchronize(true);
 });
 
 

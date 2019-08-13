@@ -7,13 +7,7 @@ import { UserEntity } from './index';
 
 
 beforeAll(async (): Promise<void> => {
-  try {
-    await createConnection(config);
-  } catch (e) {
-    const connection = getConnection();
-    await connection.connect();
-    await connection.synchronize();
-  }
+  await createConnection(config);
 });
 
 
@@ -22,9 +16,8 @@ afterAll(async (): Promise<void> => {
 });
 
 
-beforeEach(async (): Promise<void> => {
-  await getConnection()
-    .query('DELETE FROM "user"');
+afterEach(async (): Promise<void> => {
+  await getConnection().synchronize(true);
 });
 
 
